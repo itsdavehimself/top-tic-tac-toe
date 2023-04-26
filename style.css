@@ -1,0 +1,21 @@
+.container {
+  display: grid;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+.game-container {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+}
+
+.game-container>div {
+  height: 100px;
+  width: 100px;
+}
+
