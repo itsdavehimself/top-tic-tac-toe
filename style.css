@@ -19,3 +19,20 @@ h1 {
   width: 100px;
 }
 
+.button {
+  border: none;
+}
+
+.button:hover {
+  background-color: beige;
+}
+
+.button.X {
+  background-color: rgb(194, 255, 255);
+  color: black;
+}
+
+.button.O {
+  background-color: rgb(255, 198, 198);
+  color: black;
+}
