@@ -1,94 +1,92 @@
-function gameBoard () {
-  let rows = 3;
-  let columns = 3;
-  let board = [];
+function Gameboard() {
+  const rows = 3;
+  const columns = 3;
+  const board = [];
 
   for (let i = 0; i < rows; i++) {
     board[i] = [];
     for (let j = 0; j < columns; j++) {
-      board[i].push(Cell());
-    }};
-
-  const grid = document.querySelector('.game-container');
-
-  let dataValue = 0;
-  board.forEach((row) => {
-    row.forEach((element) => {
-      dataValue++;
-      const gameBtn = document.createElement('button');
-      gameBtn.classList.add('button');
-      gameBtn.setAttribute('id', [dataValue]);
-      gameBtn.textContent = '';
-      grid.appendChild(gameBtn);
-    });
-  });
+      board[i].push(Box());
+    }
+  }
 
   const getBoard = () => board;
 
-  return {
-    getBoard,
+  const playerMove = (row, column, player) => {
+    if (board[row][column].getValue() !== 0) {
+      console.log("Can't move there. Spot's taken.");
+      return false;
+    } else {
+      console.log('Nice move') 
+      board[row][column].markBox(player);
+    }
+  } 
+
+  const printBoard = () => {
+    const boardWithValues = board.map((row) => row.map((cell) => cell.getValue()));
+    console.log(boardWithValues);
   }
+
+  return { getBoard, printBoard, playerMove };
+
 };
 
-function Cell() {
+
+function Box() {
   let value = 0;
 
-  const addPlayerValue = (player) => {
+  const markBox = (player) => {
     value = player;
-  };
+  }
 
   const getValue = () => value;
 
-  return {
-    addPlayerValue,
-    getValue
-  }
-};
+  return { getValue, markBox }
+}
 
-function gameFlow(
-  playerOneName = "Player X",
-  PlayerTwoName = "Player O"
-) {
-  const board = gameBoard();
+
+const GameController = function() {
 
   const players = [
     {
-      name: playerOneName,
+      name: 'Player X',
       token: 1
+      
     },
     {
-      name: PlayerTwoName,
+      name: 'Player O',
       token: 2
     }
-  ];
+  ]
 
-  let activePlayer = players[0];
+  const board = Gameboard();
 
-  const switchPlayerTurn = () => {
-    activePlayer = activePlayer === players[0] ? players[1] : players[0];
-  };
+  let currentPlayer = players[0];
 
-  const getActivePlayer = () => activePlayer;
+  const switchPlayer = () => {
+    currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
+  }
 
-  const btnsArr = Array.from(document.querySelectorAll('.button'));
+  const showBoard = () => {
+    board.printBoard();
+    console.log(`${currentPlayer.name}'s turn`);
+  } 
 
-  for (let i = 0; i < btnsArr.length; i++) {
-    btnsArr[i].addEventListener('click', () => {
-      if (activePlayer === players[0]) {
-        btnsArr[i].classList.add('X')
-        btnsArr[i].textContent = 'X';
-        btnsArr[i].disabled = true;
-        switchPlayerTurn();
-      } else {
-        btnsArr[i].classList.add('O')
-        btnsArr[i].textContent = 'O';
-        btnsArr[i].disabled = true;
-        switchPlayerTurn();
-      }
+  const playRound = (row, column) => {
+    if (board.playerMove(row, column, currentPlayer.token) === false) {
+      console.log(`${currentPlayer.name}, try again`)
+      showBoard();
+    } else {
+      console.log('Switching players...')
+      switchPlayer();
+      showBoard();
+    };
+  }
 
-    });
-  };
+  showBoard();
 
-}
+  return { playRound }
 
-const game = gameFlow();
+};
+
+const game = GameController();
