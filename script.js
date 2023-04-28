@@ -27,7 +27,10 @@ function Gameboard() {
     console.log(boardWithValues);
   }
 
-  return { getBoard, printBoard, playerMove };
+  const checkCellValue = (row, column) => board[row][column].getValue();
+
+
+  return { getBoard, printBoard, playerMove, checkCellValue };
 
 };
 
@@ -72,14 +75,41 @@ const GameController = function() {
     console.log(`${currentPlayer.name}'s turn`);
   } 
 
+  const checkCell = (row, column) => board.checkCellValue(row, column);
+
+  const checkWin = () => {
+    if (checkCell(0, 0) === checkCell(0, 1) && checkCell(0, 1) === checkCell(0, 2) && checkCell(0,0) !== 0
+    || checkCell(1, 0) === checkCell(1, 1) && checkCell(1, 1) === checkCell(1, 2) && checkCell(1,0) !== 0
+    || checkCell(2, 0) === checkCell(2, 1) && checkCell(2, 1) === checkCell(2, 2) && checkCell(2,0) !== 0
+    || checkCell(0, 0) === checkCell(1, 0) && checkCell(1, 0) === checkCell(2, 0) && checkCell(0,0) !== 0
+    || checkCell(0, 1) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 1) && checkCell(0,1) !== 0
+    || checkCell(0, 2) === checkCell(1, 2) && checkCell(1, 2) === checkCell(2, 2) && checkCell(0,2) !== 0
+    || checkCell(0, 0) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 2) && checkCell(0,0) !== 0
+    || checkCell(0, 2) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 0) && checkCell(0,2) !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const checkTie = () => {
+    
+  }
+
   const playRound = (row, column) => {
     if (board.playerMove(row, column, currentPlayer.token) === false) {
       console.log(`${currentPlayer.name}, try again`)
       showBoard();
+    } else if (checkWin() === true) {
+        console.log('Game over...');
+        console.log(`${currentPlayer.name} wins!`)
+    } else if (checkTie() === true) {
+        console.log('Game over...');
+        console.log('Tie game');
     } else {
-      console.log('Switching players...')
-      switchPlayer();
-      showBoard();
+        console.log('Switching players...')
+        switchPlayer();
+        showBoard();
     };
   }
 
