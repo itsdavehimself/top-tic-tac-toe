@@ -134,3 +134,45 @@ const GameController = function() {
 
 };
 
+function ScreenController() {
+  const game = GameController();
+  const playerDisplay = document.querySelector('.player-turn')
+  const boardDiv = document.querySelector('.game-container');
+
+  const updateScreen = () => {
+
+    boardDiv.textContent = '';
+
+    const board = game.getBoard();
+    const activePlayer = game.getCurrentPlayer();
+
+    playerDisplay.textContent = `${game.getCurrentPlayer().name}` + " make your move"
+
+    board.forEach((row, rowIndex) => {
+      row.forEach((cell, cellIndex) => {
+        const cellButton = document.createElement('button');
+        const cellValue = cell.getValue();
+        cellButton.classList.add('button');
+        cellButton.dataset.cellRow = `${rowIndex}` 
+        cellButton.dataset.cellColumn = `${cellIndex}`
+        cellButton.textContent = cell.getValue();
+        boardDiv.appendChild(cellButton);
+      })
+    })
+  }
+
+  function clickHandlerBoard(e) {
+    const clickedCellRow = e.target.dataset.cellRow;
+    const clickedCellColumn = e.target.dataset.cellColumn;
+    if (!clickedCellRow || !clickedCellColumn) return;
+    game.playRound(clickedCellRow, clickedCellColumn);
+    updateScreen();
+  }
+
+  boardDiv.addEventListener('click', clickHandlerBoard)
+
+  updateScreen();
+
+};
+
+ScreenController();
