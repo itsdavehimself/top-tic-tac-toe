@@ -27,6 +27,8 @@ function Gameboard() {
     console.log(boardWithValues);
   }
 
+
+
   const checkCellValue = (row, column) => board[row][column].getValue();
 
 
@@ -92,9 +94,21 @@ const GameController = function() {
     }
   }
 
+
   const checkTie = () => {
-    
+    if ((checkCell(0, 0)
+    && checkCell(0, 1)
+    && checkCell(0, 2)
+    && checkCell(1, 0)
+    && checkCell(1, 1)
+    && checkCell(1, 2)
+    && checkCell(2, 0)
+    && checkCell(2, 1)
+    && checkCell(2, 2)) !==0) {
+      return true
+    }
   }
+
 
   const playRound = (row, column) => {
     if (board.playerMove(row, column, currentPlayer.token) === false) {
@@ -115,7 +129,7 @@ const GameController = function() {
 
   showBoard();
 
-  return { playRound }
+  return { playRound, checkTie }
 
 };
 
