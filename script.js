@@ -153,8 +153,9 @@ function ScreenController() {
         const cellButton = document.createElement('button');
         const cellValue = cell.getValue();
         cellButton.classList.add('button');
-        cellButton.dataset.cellRow = `${rowIndex}` 
-        cellButton.dataset.cellColumn = `${cellIndex}`
+        cellButton.dataset.cellRow = `${rowIndex}`;
+        cellButton.dataset.cellColumn = `${cellIndex}`;
+        cellButton.dataset.cellValue = `${cellValue}`;
         cellButton.textContent = cell.getValue();
         boardDiv.appendChild(cellButton);
       })
