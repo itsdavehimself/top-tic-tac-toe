@@ -13,7 +13,7 @@ function Gameboard() {
   const getBoard = () => board;
 
   const playerMove = (row, column, player) => {
-    if (board[row][column].getValue() !== 0) {
+    if (board[row][column].getValue() !== '') {
       console.log("Can't move there. Spot's taken.");
       return false;
     } else {
@@ -27,10 +27,7 @@ function Gameboard() {
     console.log(boardWithValues);
   }
 
-
-
   const checkCellValue = (row, column) => board[row][column].getValue();
-
 
   return { getBoard, printBoard, playerMove, checkCellValue };
 
@@ -38,7 +35,7 @@ function Gameboard() {
 
 
 function Box() {
-  let value = 0;
+  let value = '';
 
   const markBox = (player) => {
     value = player;
@@ -55,12 +52,12 @@ const GameController = function() {
   const players = [
     {
       name: 'Player X',
-      token: 1
+      token: 'X'
       
     },
     {
       name: 'Player O',
-      token: 2
+      token: 'O'
     }
   ]
 
@@ -72,6 +69,8 @@ const GameController = function() {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
   }
 
+  const getCurrentPlayer = () => currentPlayer;
+
   const showBoard = () => {
     board.printBoard();
     console.log(`${currentPlayer.name}'s turn`);
@@ -80,20 +79,19 @@ const GameController = function() {
   const checkCell = (row, column) => board.checkCellValue(row, column);
 
   const checkWin = () => {
-    if (checkCell(0, 0) === checkCell(0, 1) && checkCell(0, 1) === checkCell(0, 2) && checkCell(0,0) !== 0
-    || checkCell(1, 0) === checkCell(1, 1) && checkCell(1, 1) === checkCell(1, 2) && checkCell(1,0) !== 0
-    || checkCell(2, 0) === checkCell(2, 1) && checkCell(2, 1) === checkCell(2, 2) && checkCell(2,0) !== 0
-    || checkCell(0, 0) === checkCell(1, 0) && checkCell(1, 0) === checkCell(2, 0) && checkCell(0,0) !== 0
-    || checkCell(0, 1) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 1) && checkCell(0,1) !== 0
-    || checkCell(0, 2) === checkCell(1, 2) && checkCell(1, 2) === checkCell(2, 2) && checkCell(0,2) !== 0
-    || checkCell(0, 0) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 2) && checkCell(0,0) !== 0
-    || checkCell(0, 2) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 0) && checkCell(0,2) !== 0) {
+    if (checkCell(0, 0) === checkCell(0, 1) && checkCell(0, 1) === checkCell(0, 2) && checkCell(0,0) !== ''
+    || checkCell(1, 0) === checkCell(1, 1) && checkCell(1, 1) === checkCell(1, 2) && checkCell(1,0) !== ''
+    || checkCell(2, 0) === checkCell(2, 1) && checkCell(2, 1) === checkCell(2, 2) && checkCell(2,0) !== ''
+    || checkCell(0, 0) === checkCell(1, 0) && checkCell(1, 0) === checkCell(2, 0) && checkCell(0,0) !== ''
+    || checkCell(0, 1) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 1) && checkCell(0,1) !== ''
+    || checkCell(0, 2) === checkCell(1, 2) && checkCell(1, 2) === checkCell(2, 2) && checkCell(0,2) !== ''
+    || checkCell(0, 0) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 2) && checkCell(0,0) !== ''
+    || checkCell(0, 2) === checkCell(1, 1) && checkCell(1, 1) === checkCell(2, 0) && checkCell(0,2) !== '') {
       return true;
     } else {
       return false;
     }
   }
-
 
   const checkTie = () => {
     if ((checkCell(0, 0)
@@ -104,11 +102,10 @@ const GameController = function() {
     && checkCell(1, 2)
     && checkCell(2, 0)
     && checkCell(2, 1)
-    && checkCell(2, 2)) !==0) {
+    && checkCell(2, 2)) !== '') {
       return true
     }
   }
-
 
   const playRound = (row, column) => {
     if (board.playerMove(row, column, currentPlayer.token) === false) {
@@ -129,8 +126,11 @@ const GameController = function() {
 
   showBoard();
 
-  return { playRound, checkTie }
+  return {
+    playRound,
+    getCurrentPlayer,
+    getBoard: board.getBoard
+  }
 
 };
 
-const game = GameController();
