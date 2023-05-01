@@ -152,6 +152,7 @@ function ScreenController() {
   winnerDisplay.appendChild(winnerDisplayMsg);
   const playAgainDiv = document.querySelector('.reset');
   const playAgainBtn = document.createElement('button');
+  playAgainBtn.classList.add('play-again-btn')
   playAgainDiv.classList.add('play-again-div')
 
   const updateScreen = () => {
