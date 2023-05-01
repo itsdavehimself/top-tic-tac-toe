@@ -3,12 +3,16 @@ function Gameboard() {
   const columns = 3;
   const board = [];
 
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j < columns; j++) {
-      board[i].push(Box());
+  const makeBoard = () => {
+    for (let i = 0; i < rows; i++) {
+      board[i] = [];
+      for (let j = 0; j < columns; j++) {
+        board[i].push(Box());
+      }
     }
   }
+
+  makeBoard();
 
   const getBoard = () => board;
 
@@ -22,7 +26,7 @@ function Gameboard() {
 
   const checkCellValue = (row, column) => board[row][column].getValue();
 
-  return { getBoard, playerMove, checkCellValue };
+  return { getBoard, playerMove, checkCellValue, makeBoard };
 
 };
 
@@ -117,12 +121,20 @@ const GameController = function() {
     };
   }
 
+  const resetGame = () => {
+    board.makeBoard();
+    isGameOver = false;
+    currentPlayer = players[0];
+    gameState = '';
+  }
+
   return {
     playRound,
     getCurrentPlayer,
     getBoard: board.getBoard,
     getGameState,
-    checkIsGameOver
+    checkIsGameOver,
+    resetGame
   }
 
 };
@@ -140,12 +152,12 @@ function ScreenController() {
     boardDiv.textContent = '';
 
     const board = game.getBoard();
-    const activePlayer = game.getCurrentPlayer();
+    const activePlayer = game.getCurrentPlayer().name;
 
     winnerDisplay.textContent = `${game.getGameState()}`
 
     if (!game.checkIsGameOver()) {
-      playerDisplay.textContent = `${game.getCurrentPlayer().name}` + ' make your move'
+      playerDisplay.textContent = `${activePlayer}` + ' make your move'
     } else {
       playerDisplay.textContent = '';
       playAgainBtn.classList.add('play-again-btn');
@@ -178,8 +190,10 @@ function ScreenController() {
     updateScreen();
   }
 
-  function playAgainHandler(e) {
-    console.log('hey');
+  const playAgainHandler = () => {
+    game.resetGame();
+    playAgainDiv.removeChild(playAgainBtn)
+    updateScreen();
   }
 
   playAgainBtn.addEventListener('click', playAgainHandler);
