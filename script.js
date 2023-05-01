@@ -65,9 +65,9 @@ const GameController = function() {
 
   let currentPlayer = players[0];
 
-  let winningPlayer = '';
+  let gameState = '';
 
-  const getWinningPlayer = () => winningPlayer;
+  const getGameState = () => gameState;
 
   const switchPlayer = () => {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
@@ -116,12 +116,9 @@ const GameController = function() {
       console.log(`${currentPlayer.name}, try again`)
       showBoard();
     } else if (checkWin() === true) {
-        console.log('Game over...');
-        console.log(`${currentPlayer.name} wins!`)
-        winningPlayer = `${currentPlayer.name}` + ' wins!';
+        gameState = `${currentPlayer.name}` + ' wins!';
     } else if (checkTie() === true) {
-        console.log('Game over...');
-        console.log('Tie game');
+        gameState = "It's a tie."
     } else {
         console.log('Switching players...')
         switchPlayer();
@@ -135,7 +132,7 @@ const GameController = function() {
     playRound,
     getCurrentPlayer,
     getBoard: board.getBoard,
-    getWinningPlayer
+    getGameState
   }
 
 };
@@ -153,7 +150,7 @@ function ScreenController() {
     const board = game.getBoard();
     const activePlayer = game.getCurrentPlayer();
 
-    winnerDisplay.textContent = `${game.getWinningPlayer()}`
+    winnerDisplay.textContent = `${game.getGameState()}`
 
     playerDisplay.textContent = `${game.getCurrentPlayer().name}` + ' make your move'
 
