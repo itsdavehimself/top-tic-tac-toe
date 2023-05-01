@@ -65,6 +65,10 @@ const GameController = function() {
 
   let currentPlayer = players[0];
 
+  let winningPlayer = '';
+
+  const getWinningPlayer = () => winningPlayer;
+
   const switchPlayer = () => {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0]; 
   }
@@ -114,6 +118,7 @@ const GameController = function() {
     } else if (checkWin() === true) {
         console.log('Game over...');
         console.log(`${currentPlayer.name} wins!`)
+        winningPlayer = `${currentPlayer.name}` + ' wins!';
     } else if (checkTie() === true) {
         console.log('Game over...');
         console.log('Tie game');
@@ -129,7 +134,8 @@ const GameController = function() {
   return {
     playRound,
     getCurrentPlayer,
-    getBoard: board.getBoard
+    getBoard: board.getBoard,
+    getWinningPlayer
   }
 
 };
@@ -138,6 +144,7 @@ function ScreenController() {
   const game = GameController();
   const playerDisplay = document.querySelector('.player-turn')
   const boardDiv = document.querySelector('.game-container');
+  const winnerDisplay = document.querySelector('.winner-container')
 
   const updateScreen = () => {
 
@@ -146,7 +153,9 @@ function ScreenController() {
     const board = game.getBoard();
     const activePlayer = game.getCurrentPlayer();
 
-    playerDisplay.textContent = `${game.getCurrentPlayer().name}` + " make your move"
+    winnerDisplay.textContent = `${game.getWinningPlayer()}`
+
+    playerDisplay.textContent = `${game.getCurrentPlayer().name}` + ' make your move'
 
     board.forEach((row, rowIndex) => {
       row.forEach((cell, cellIndex) => {
