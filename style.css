@@ -1,14 +1,23 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .container {
   display: grid;
-  justify-content: center;
+  justify-items: center;
 }
 
 h1 {
   text-align: center;
 }
 
-.player-turn {
+.winner-container {
+  height: 50px;
+}
 
+.player-turn {
+  font-size: 1rem;
+  height: 50px;
 }
 
 .game-container {
@@ -25,6 +34,11 @@ h1 {
 
 .button {
   border: none;
+  background-color: #e4e4e4;
+}
+
+.button.disabled {
+  background-color: #e4e4e4;
 }
 
 .button:hover {
@@ -33,11 +47,18 @@ h1 {
 
 button[data-cell-value="X"] {
   background-color: rgb(194, 255, 255);
+  font-size: 3rem;
   color: black;
 }
 
 button[data-cell-value="O"] {
   background-color: rgb(255, 198, 198);
+  font-size: 3rem;
   color: black;
 }
 
+.play-again-div {
+  display: grid;
+  height: 50px;
+  align-items: center;
+}

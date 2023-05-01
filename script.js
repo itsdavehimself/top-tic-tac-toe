@@ -141,11 +141,18 @@ const GameController = function() {
 
 function ScreenController() {
   const game = GameController();
-  const playerDisplay = document.querySelector('.player-turn');
+  const playerDisplayDiv = document.querySelector('.player-turn');
+  const playerDisplayMsg = document.createElement('p');
+  playerDisplayMsg.classList.add('player-display-msg');
+  playerDisplayDiv.appendChild(playerDisplayMsg);
   const boardDiv = document.querySelector('.game-container');
   const winnerDisplay = document.querySelector('.winner-container');
+  const winnerDisplayMsg = document.createElement('p');
+  winnerDisplayMsg.classList.add('winner-display-msg');
+  winnerDisplay.appendChild(winnerDisplayMsg);
   const playAgainDiv = document.querySelector('.reset');
   const playAgainBtn = document.createElement('button');
+  playAgainDiv.classList.add('play-again-div')
 
   const updateScreen = () => {
 
@@ -154,12 +161,12 @@ function ScreenController() {
     const board = game.getBoard();
     const activePlayer = game.getCurrentPlayer().name;
 
-    winnerDisplay.textContent = `${game.getGameState()}`
+    winnerDisplayMsg.textContent = `${game.getGameState()}`
 
     if (!game.checkIsGameOver()) {
-      playerDisplay.textContent = `${activePlayer}` + ' make your move'
+      playerDisplayMsg.textContent = `${activePlayer}` + ' make your move'
     } else {
-      playerDisplay.textContent = '';
+      playerDisplayMsg.textContent = '';
       playAgainBtn.classList.add('play-again-btn');
       playAgainBtn.textContent = 'Play Again?';
       playAgainDiv.appendChild(playAgainBtn);
