@@ -14,22 +14,15 @@ function Gameboard() {
 
   const playerMove = (row, column, player) => {
     if (board[row][column].getValue() !== '') {
-      console.log("Can't move there. Spot's taken.");
       return false;
     } else {
-      console.log('Nice move') 
       board[row][column].markBox(player);
     }
   } 
 
-  const printBoard = () => {
-    const boardWithValues = board.map((row) => row.map((cell) => cell.getValue()));
-    console.log(boardWithValues);
-  }
-
   const checkCellValue = (row, column) => board[row][column].getValue();
 
-  return { getBoard, printBoard, playerMove, checkCellValue };
+  return { getBoard, playerMove, checkCellValue };
 
 };
 
@@ -79,11 +72,6 @@ const GameController = function() {
 
   const getCurrentPlayer = () => currentPlayer;
 
-  const showBoard = () => {
-    board.printBoard();
-    console.log(`${currentPlayer.name}'s turn`);
-  } 
-
   const checkCell = (row, column) => board.checkCellValue(row, column);
 
   const checkWin = () => {
@@ -118,7 +106,6 @@ const GameController = function() {
   const playRound = (row, column) => {
     if (board.playerMove(row, column, currentPlayer.token) === false) {
       console.log(`${currentPlayer.name}, try again`)
-      showBoard();
     } else if (checkWin() === true) {
         gameState = `${currentPlayer.name}` + ' wins!';
         isGameOver = true;
@@ -126,13 +113,9 @@ const GameController = function() {
         gameState = "It's a tie."
         isGameOver = true;
     } else {
-        console.log('Switching players...')
         switchPlayer();
-        showBoard();
     };
   }
-
-  showBoard();
 
   return {
     playRound,
@@ -149,6 +132,8 @@ function ScreenController() {
   const playerDisplay = document.querySelector('.player-turn');
   const boardDiv = document.querySelector('.game-container');
   const winnerDisplay = document.querySelector('.winner-container');
+  const playAgainDiv = document.querySelector('.reset');
+  const playAgainBtn = document.createElement('button');
 
   const updateScreen = () => {
 
@@ -163,6 +148,9 @@ function ScreenController() {
       playerDisplay.textContent = `${game.getCurrentPlayer().name}` + ' make your move'
     } else {
       playerDisplay.textContent = '';
+      playAgainBtn.classList.add('play-again-btn');
+      playAgainBtn.textContent = 'Play Again?';
+      playAgainDiv.appendChild(playAgainBtn);
     }
     
     board.forEach((row, rowIndex) => {
@@ -190,11 +178,15 @@ function ScreenController() {
     updateScreen();
   }
 
-  boardDiv.addEventListener('click', clickHandlerBoard)
+  function playAgainHandler(e) {
+    console.log('hey');
+  }
+
+  playAgainBtn.addEventListener('click', playAgainHandler);
+
+  boardDiv.addEventListener('click', clickHandlerBoard);
 
   updateScreen();
-
-
 
 };
 
