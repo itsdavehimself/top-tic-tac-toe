@@ -105,7 +105,7 @@ const GameController = function() {
 
   const playRound = (row, column) => {
     if (board.playerMove(row, column, currentPlayer.token) === false) {
-      console.log(`${currentPlayer.name}, try again`)
+      return;
     } else if (checkWin() === true) {
         gameState = `${currentPlayer.name}` + ' wins!';
         isGameOver = true;
