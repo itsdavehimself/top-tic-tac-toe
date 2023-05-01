@@ -67,6 +67,10 @@ const GameController = function() {
 
   let gameState = '';
 
+  let isGameOver = false;
+
+  const checkIsGameOver = () => isGameOver;
+
   const getGameState = () => gameState;
 
   const switchPlayer = () => {
@@ -117,8 +121,10 @@ const GameController = function() {
       showBoard();
     } else if (checkWin() === true) {
         gameState = `${currentPlayer.name}` + ' wins!';
+        isGameOver = true;
     } else if (checkTie() === true) {
         gameState = "It's a tie."
+        isGameOver = true;
     } else {
         console.log('Switching players...')
         switchPlayer();
@@ -132,16 +138,17 @@ const GameController = function() {
     playRound,
     getCurrentPlayer,
     getBoard: board.getBoard,
-    getGameState
+    getGameState,
+    checkIsGameOver
   }
 
 };
 
 function ScreenController() {
   const game = GameController();
-  const playerDisplay = document.querySelector('.player-turn')
+  const playerDisplay = document.querySelector('.player-turn');
   const boardDiv = document.querySelector('.game-container');
-  const winnerDisplay = document.querySelector('.winner-container')
+  const winnerDisplay = document.querySelector('.winner-container');
 
   const updateScreen = () => {
 
@@ -152,8 +159,12 @@ function ScreenController() {
 
     winnerDisplay.textContent = `${game.getGameState()}`
 
-    playerDisplay.textContent = `${game.getCurrentPlayer().name}` + ' make your move'
-
+    if (!game.checkIsGameOver()) {
+      playerDisplay.textContent = `${game.getCurrentPlayer().name}` + ' make your move'
+    } else {
+      playerDisplay.textContent = '';
+    }
+    
     board.forEach((row, rowIndex) => {
       row.forEach((cell, cellIndex) => {
         const cellButton = document.createElement('button');
@@ -164,6 +175,9 @@ function ScreenController() {
         cellButton.dataset.cellValue = `${cellValue}`;
         cellButton.textContent = cell.getValue();
         boardDiv.appendChild(cellButton);
+        if (game.checkIsGameOver()) {
+          cellButton.disabled = true;
+        }
       })
     })
   }
@@ -179,6 +193,8 @@ function ScreenController() {
   boardDiv.addEventListener('click', clickHandlerBoard)
 
   updateScreen();
+
+
 
 };
 
