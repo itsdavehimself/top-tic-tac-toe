@@ -44,16 +44,19 @@ function Box() {
 }
 
 
-const GameController = function() {
+const GameController = function(
+  playerOneName = "Player X",
+  playerTwoName = "Player O"
+) {
 
   const players = [
     {
-      name: 'Player X',
+      name: playerOneName,
       token: 'X'
       
     },
     {
-      name: 'Player O',
+      name: playerTwoName,
       token: 'O'
     }
   ]
@@ -139,8 +142,8 @@ const GameController = function() {
 
 };
 
-function ScreenController() {
-  const game = GameController();
+function ScreenController(playerOneName, playerTwoName) {
+  const game = GameController(playerOneName, playerTwoName);
   const playerDisplayDiv = document.querySelector('.player-turn');
   const playerDisplayMsg = document.createElement('p');
   playerDisplayMsg.classList.add('player-display-msg');
@@ -212,4 +215,22 @@ function ScreenController() {
 
 };
 
-ScreenController();
+function GameSetUpController() {
+  const startBtn = document.querySelector('.start-btn');
+  const setUpDiv = document.querySelector('.set-up-container');
+  let playerOneName = 'Player X';
+  let playerTwoName = 'Player O';
+
+  const enterPlayerNames = (e) => {
+    playerOneName = document.getElementById('player-one-input').value;
+    playerTwoName = document.getElementById('player-two-input').value;
+    const gameScreen = ScreenController(playerOneName, playerTwoName);
+    setUpDiv.style.visibility = "hidden"
+    e.preventDefault();
+  }
+
+  startBtn.addEventListener('click', enterPlayerNames)
+
+}
+
+GameSetUpController();
